@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * @package  laravel/repositories
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ * @date 	$TIME$
+ */
+
+namespace $NAMESPACE$;
+
+use Saad\Repositories\Contracts\RepositoryContract;
+
+interface $MODEL$RepositoryContract extends RepositoryContract {}

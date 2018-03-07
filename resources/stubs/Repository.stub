@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @package  laravel/repositories
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ * @date 	$TIME$
+ */
+
+namespace $NAMESPACE$;
+use $FULL_MODEL$;
+use Saad\Repositories\BaseRepository;
+use $NAMESPACE$\Contracts\$MODEL$RepositoryContract;
+
+class $MODEL$Repository extends BaseRepository implements $MODEL$RepositoryContract {
+
+	/**
+	 * Repository Model Name
+	 * 
+	 * @return string Model Full Name
+	 */
+	public function model()
+	{
+		return $MODEL$::class;
+	}
+
+	/**
+	 * default transformer
+	 * 
+	 * @return object|string Transformer class name or object
+	 */
+	public function transformer()
+	{
+		// return $MODEL$Transformer::class;
+	}
+	
+	/**
+	 * Models 
+	 * @return array models that model has relation with
+	 */
+	public function canHave () {
+		return [
+			// Model::Class,
+		];
+	}
+}

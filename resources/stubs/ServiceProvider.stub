@@ -1,0 +1,6 @@
+		
+		# Bind $FILE$ Resolver To Service Container
+		$this->app->bind(\$NAMESPACE$\Contracts\$FILE$Contract::class, function($app) {
+            return $app->make(\$NAMESPACE$\$FILE$::class);
+        });
+        # $FILE$ End

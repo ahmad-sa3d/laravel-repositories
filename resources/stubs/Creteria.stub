@@ -1,0 +1,27 @@
+<?php
+namespace $NAMESPACE$;
+
+use Saad\Repositories\Contracts\CreteriaContract;
+use Saad\Repositories\Contracts\RepositoryContract as Repository;
+use Illuminate\Database\Eloquent\Builder;
+
+class $FILE$ implements CreteriaContract {
+
+	public function __construct()
+	{
+		// 
+	}
+	
+	/**
+	 * Apply Query
+	 * @param  Builder    $query        Builder to apply query on
+	 * @param  Repository $repository   Repository that applies creteria
+	 * @return Builder             		Builder after applying bindings
+	 */
+	public function apply(Builder $query, Repository $repository)
+	{
+		// Binding clauses
+
+		return $query;
+	}
+}

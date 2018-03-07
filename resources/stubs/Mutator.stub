@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @package  laravel/repositories
+ *
+ * @author Ahmed Saad <a7mad.sa3d.2014@gmail.com>
+ * @license MIT MIT
+ * @date 	$TIME$
+ */
+
+namespace $NAMESPACE$;
+
+use $FULL_MODEL$;
+use Saad\Repositories\Contracts\MutatorContract;
+use Illuminate\Database\Eloquent\Model;
+
+class $FILE$ implements MutatorContract {
+
+	/**
+	 * Create $MODEL$
+	 * 
+	 * @param array $attributes attributes array
+	 * @return $MODEL$ $MODEL$
+	 */
+	public function create(array $attributes) :Model {
+		$$LOWER_MODEL$ = new $MODEL$();
+		$this->update$MODEL$Object($$LOWER_MODEL$, $attributes);
+		return $$LOWER_MODEL$;
+	}
+
+	/**
+	 * Update $MODEL$
+	 *
+	 * @param $MODEL$ $$LOWER_MODEL$ $LOWER_MODEL$ object
+	 * @param array $attributes attributes array
+	 * @return $MODEL$ $MODEL$
+	 */
+	public function update(Model $$LOWER_MODEL$, array $attributes) :bool {
+		return $this->update$MODEL$Object($$LOWER_MODEL$, $attributes);
+	}
+
+	/**
+	 * assign and save $MODEL$ object
+	 *
+	 * @param $MODEL$ $$LOWER_MODEL$ $LOWER_MODEL$ object
+	 * @param array $attributes attributes array
+	 * @return $MODEL$ $MODEL$
+	 */
+	protected function update$MODEL$Object(Model $$LOWER_MODEL$, array $attributes) {
+		// Your Assignment Logic
+
+		return $$LOWER_MODEL$->save();
+	}
+
+}
