@@ -1,0 +1,38 @@
+{
+    "name": "saad/laravel-repositories",
+    "description": "This library will applies Repositpry design pattern to Laravel",
+    "keywords": [
+        "laravel",
+        "repositories",
+        "creteria",
+        "mutation",
+        "mutate",
+        "models",
+        "transform"
+    ],
+    "require": {
+        "saad/fractal": "^1.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ahmed Saad",
+            "email": "a7mad.sa3d.2014@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Saad\\QueryParser\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+            ],
+
+            "aliases": {
+            }
+        }
+    }
+}
