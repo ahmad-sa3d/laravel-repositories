@@ -29,6 +29,13 @@ interface HasCreteriaContract {
 	public function skipCreteria() :RepositoryContract;
 
 	/**
+	 * Reset Creteria collection
+	 * 
+	 * @return Repository Repository
+	 */
+	public function resetCreteria() :RepositoryContract;
+
+	/**
 	 * add Creteria to creteria collection
 	 *
 	 * @param Creteria $creteria Creteria to be added to query builder

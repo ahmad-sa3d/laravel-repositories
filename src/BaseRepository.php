@@ -311,6 +311,17 @@ abstract class BaseRepository implements
 	}
 
 	/**
+	 * reset creteria collection
+	 *
+	 * @param Creteria $creteria Creteria to be added to query builder
+	 * @return Repository Repository
+	 */
+	public function resetCreteria() :RepositoryContract {
+		$this->creteria = collect();
+		return $this;
+	}
+
+	/**
 	 * apply creteria directly to query builder
 	 *
 	 * skipCreteria has no effect
