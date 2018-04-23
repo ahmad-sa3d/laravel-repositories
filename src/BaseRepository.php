@@ -517,11 +517,11 @@ abstract class BaseRepository implements
 	 * @return object|Fractal|Collection                   output result
 	 */
 	protected function execute(array $columns = ['*'], $sinle_object = false, int $per_page = null) {
+		// Prepare First because we might add selections by creteria
+		$this->applyPreparer();
+
 		// Apply Creteria
 		$this->applyCreteria();
-
-		// Prepare
-		$this->applyPreparer();
 
 		// Execute Query
 		if ($per_page) {
@@ -590,9 +590,15 @@ abstract class BaseRepository implements
 				if (is_array($model)) {
 					foreach ($model as $context_key) {
 						RequestQueryParser::loadOnContext($key, $object, null, $context_key);
+						
+						// For Count
+						RequestQueryParser::loadOnContext($key, $object, null, $context_key, true);
 					}
 				} else {
 					RequestQueryParser::loadOnContext($model, $object, null);
+
+					// For Count
+					RequestQueryParser::loadOnContext($model, $object, null, null, true);
 				}
 			}
 		}
