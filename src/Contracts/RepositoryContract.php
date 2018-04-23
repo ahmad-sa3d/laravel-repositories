@@ -66,7 +66,7 @@ interface RepositoryContract {
 	 * @param  integer $id record id
 	 * @param  array $attributes
 	 */
-	public function update(int $id, array $attributes);
+	public function update($id_or_object, array $attributes);
 
 	/**
 	 * Delete Record
