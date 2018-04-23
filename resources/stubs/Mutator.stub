@@ -15,6 +15,20 @@ use Saad\Repositories\Contracts\MutatorContract;
 use Illuminate\Database\Eloquent\Model;
 
 class $FILE$ implements MutatorContract {
+	
+	/**
+	 * $MODEL$ instance
+	 * $MODEL$
+	 */
+	private $$LOWER_MODEL$;
+
+
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+		// Setup
+	}
 
 	/**
 	 * Create $MODEL$
@@ -23,9 +37,9 @@ class $FILE$ implements MutatorContract {
 	 * @return $MODEL$ $MODEL$
 	 */
 	public function create(array $attributes) :Model {
-		$$LOWER_MODEL$ = new $MODEL$();
-		$this->update$MODEL$Object($$LOWER_MODEL$, $attributes);
-		return $$LOWER_MODEL$;
+		$this->$LOWER_MODEL$ = new $MODEL$();
+		$this->update$MODEL$Object($attributes);
+		return $this->$LOWER_MODEL$;
 	}
 
 	/**
@@ -36,7 +50,8 @@ class $FILE$ implements MutatorContract {
 	 * @return $MODEL$ $MODEL$
 	 */
 	public function update(Model $$LOWER_MODEL$, array $attributes) :bool {
-		return $this->update$MODEL$Object($$LOWER_MODEL$, $attributes);
+		$this->$LOWER_MODEL$ = $$LOWER_MODEL$;
+		return $this->update$MODEL$Object($attributes);
 	}
 
 	/**
@@ -46,10 +61,10 @@ class $FILE$ implements MutatorContract {
 	 * @param array $attributes attributes array
 	 * @return $MODEL$ $MODEL$
 	 */
-	protected function update$MODEL$Object(Model $$LOWER_MODEL$, array $attributes) {
+	private function update$MODEL$Object(array $attributes) {
 		// Your Assignment Logic
 
-		return $$LOWER_MODEL$->save();
+		return $this->$LOWER_MODEL$->save();
 	}
 
 }
