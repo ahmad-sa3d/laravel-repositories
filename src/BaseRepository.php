@@ -9,17 +9,21 @@
 
 namespace Saad\Repositories;
 
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Saad\Fractal\Fractal;
 use Saad\Fractal\Transformers\TransformerAbstract;
 use Saad\QueryParser\RequestQueryParser;
 use Saad\Repositories\Contracts\CreteriaContract;
+use Saad\Repositories\Contracts\HasCachableContract;
 use Saad\Repositories\Contracts\HasCreteriaContract;
 use Saad\Repositories\Contracts\HasModelMutatorContract;
 use Saad\Repositories\Contracts\HasPaginationContract;
@@ -28,13 +32,14 @@ use Saad\Repositories\Contracts\HasTransformerContract;
 use Saad\Repositories\Contracts\MutatorContract;
 use Saad\Repositories\Contracts\RepositoryContract;
 
-abstract class BaseRepository implements 
+abstract class BaseRepository implements
 	RepositoryContract,
 	HasCreteriaContract,
 	HasTransformerContract,
 	HasRequestParserContract,
 	HasModelMutatorContract,
-	HasPaginationContract {
+	HasPaginationContract,
+	HasCachableContract {
 
 	/**
 	 * Eloquent Model Instance
@@ -63,6 +68,27 @@ abstract class BaseRepository implements
 	 * @var Mutator
 	 */
 	protected $mutator;
+
+	/**
+	 * Cache Key
+	 * 
+	 * @var string
+	 */
+	protected $cache_key;
+
+	/**
+	 * Cache Tags
+	 * 
+	 * @var string
+	 */
+	protected $cache_tags;
+
+	/**
+	 * Cache TTL
+	 * 
+	 * @var Carbon
+	 */
+	protected $cache_ttl;
 
 	/**
 	 * skip creteria or not
@@ -142,9 +168,9 @@ abstract class BaseRepository implements
 
 	/**
 	 * Find By Id
-	 * @param  integer    $id      [description]
+	 * @param  integer $id [description]
 	 * @param  array|null $columns [description]
-	 * @return [type]              [description]
+	 * @return Collection|object|Fractal [type]              [description]
 	 */
 	public function find(int $id, array $columns = ['*'])
 	{
@@ -154,10 +180,11 @@ abstract class BaseRepository implements
 
 	/**
 	 * Find By Attribute
-	 * 
+	 *
 	 * @param  string $attribute attribute
 	 * @param  mix $value Attribute Value
 	 * @param array $columns columns to get
+	 * @return Collection|object|Fractal
 	 */
 	public function findBy(string $attribute, $value, array $columns = ['*'])
 	{
@@ -176,11 +203,12 @@ abstract class BaseRepository implements
 
 	/**
 	 * Search By Custom Field
-	 * 
+	 *
 	 * @param  integer $id key of where clause
 	 * @param  mix $value_or_operator value of where clause or operator of where
 	 * @param  mix $value value of where clause
 	 * @param array $columns columns to get
+	 * @return Collection|object|Fractal
 	 */
 	public function where(string $attribute, $value_or_operator, $value = null, array $columns = ['*'])
 	{
@@ -198,8 +226,9 @@ abstract class BaseRepository implements
 
 	/**
 	 * Find By Custom Query
-	 * 
+	 *
 	 * @param  Closure $callback Callback to run custom query
+	 * @return Collection|object|Fractal
 	 */
 	public function whereQuery(Closure $callback, $columns = ['*']) {
 		call_user_func($callback, $this->builder);
@@ -209,8 +238,9 @@ abstract class BaseRepository implements
 
 	/**
 	 * Create New Record
-	 * 
+	 *
 	 * @param  array $attributes
+	 * @return object
 	 */
 	public function create(array $attributes) {
 		// Creating
@@ -220,14 +250,18 @@ abstract class BaseRepository implements
 			$object = $this->model->create($attributes);
 		}
 
+		// Flush Cache
+		$this->flushCache();
+
 		// Created
 		return $this->prepareObject($object);
 	}
 
 	/**
 	 * Update Record
-	 * 
+	 *
 	 * @param  array $attributes
+	 * @return object
 	 */
 	public function update($id_or_object, array $attributes) {
 		if (is_int($id_or_object) || ctype_digit((string) $id_or_object)) {
@@ -246,20 +280,29 @@ abstract class BaseRepository implements
 			$object->update($attributes);
 		}
 
+		// Flush Cache
+		$this->flushCache();
+
 		// Updated
 		return $this->prepareObject($object);
 	}
 
 	/**
 	 * Delete Record
-	 * 
+	 *
 	 * @param  integer $id record id
+	 * @return int
 	 */
 	public function delete(int $id) {
 		// Deleting
-		return $this->model->destroy($id);
+		$deleted = $this->model->destroy($id);
 
-		// Deleted
+		if ($deleted) {
+			// Flush Cache
+			$this->flushCache();
+		}
+
+		return $deleted;
 	}
 
 	/**
@@ -267,11 +310,11 @@ abstract class BaseRepository implements
 	 | 				HasCreteria Implementation
 	 | ---------------------------------------------------------
 	 */
-	
+
 	/**
 	 * Apply Creteria on Builder
-	 * 
-	 * @return Repository Repository
+	 *
+	 * @return RepositoryContract Repository
 	 */
 	public function applyCreteria() :RepositoryContract {
 		if ($this->skip_creteria) {
@@ -291,8 +334,9 @@ abstract class BaseRepository implements
 
 	/**
 	 * Skip Creteria collection
-	 * 
-	 * @return Repository Repository
+	 *
+	 * @param bool $status
+	 * @return RepositoryContract Repository
 	 */
 	public function skipCreteria(bool $status = true) :RepositoryContract {
 		$this->skip_creteria = $status;
@@ -302,8 +346,8 @@ abstract class BaseRepository implements
 	/**
 	 * add Creteria to creteria collection
 	 *
-	 * @param Creteria $creteria Creteria to be added to query builder
-	 * @return Repository Repository
+	 * @param CreteriaContract $creteria Creteria to be added to query builder
+	 * @return RepositoryContract Repository
 	 */
 	public function pushCreteria(CreteriaContract $creteria) :RepositoryContract {
 		$this->creteria->push($creteria);
@@ -313,8 +357,7 @@ abstract class BaseRepository implements
 	/**
 	 * reset creteria collection
 	 *
-	 * @param Creteria $creteria Creteria to be added to query builder
-	 * @return Repository Repository
+	 * @return RepositoryContract Repository
 	 */
 	public function resetCreteria() :RepositoryContract {
 		$this->creteria = collect();
@@ -326,8 +369,8 @@ abstract class BaseRepository implements
 	 *
 	 * skipCreteria has no effect
 	 *
-	 * @param Creteria $creteria Creteria to be added to query builder
-	 * @return Repository Repository
+	 * @param CreteriaContract $creteria Creteria to be added to query builder
+	 * @return RepositoryContract Repository
 	 */
 	public function getByCreteria(CreteriaContract $creteria) :RepositoryContract {
 		$creteria->apply($this->builder, $this);
@@ -409,9 +452,9 @@ abstract class BaseRepository implements
 
 	/**
 	 * skip praparer
-	 * 
+	 *
 	 * @param  bool|boolean $status status
-	 * @return Repository               Repository
+	 * @return RepositoryContract Repository
 	 */
 	public function skipPreparer(bool $status = true) :RepositoryContract
 	{
@@ -436,8 +479,9 @@ abstract class BaseRepository implements
 	/**
 	 * callback will be passed paginated collection
 	 * to add more flexibility like appends() method
-	 * 
-	 * @param \Closure $callback callback that returns 
+	 *
+	 * @param \Closure $callback callback that returns
+	 * @return RepositoryContract
 	 */
 	public function afterPaginated(\Closure $callback) :RepositoryContract
 	{
@@ -453,8 +497,9 @@ abstract class BaseRepository implements
 
 	/**
 	 * Skip Mutator collection
-	 * 
-	 * @return Repository Repository
+	 *
+	 * @param bool $status
+	 * @return RepositoryContract Repository
 	 */
 	public function skipMutator(bool $status = true) :RepositoryContract {
 		$this->skip_mutator = $status;
@@ -464,12 +509,65 @@ abstract class BaseRepository implements
 	/**
 	 * add Mutator to creteria collection
 	 *
-	 * @param Mutator $mutator Mutator to be added to query builder
-	 * @return Repository Repository
+	 * @param MutatorContract $mutator Mutator to be added to query builder
+	 * @return RepositoryContract Repository
 	 */
 	public function setMutator(MutatorContract $mutator) :RepositoryContract {
 		$this->mutator = $mutator;
 		return $this;
+	}
+
+	/**
+	 | ---------------------------------------------------------
+	 | 				HasCachable Implementation
+	 | ---------------------------------------------------------
+	 */
+	
+	public function cachable($key = null, array $tags = [], int $ttl = null) :RepositoryContract {
+
+		$this->cache_key = $key ? $key : $this->getRequestCacheKey();
+
+		if ($ttl) {
+			$this->cache_ttl = Carbon::now()->addMinutes($ttl);
+		}
+
+		$this->cache_tags = array_merge([
+			class_basename($this->model()),
+		], $tags);
+
+		return $this;
+	}
+
+	/**
+	 * Flush Cache'
+	 * 
+	 * @return void
+	 */
+	public function flushCache() {
+		Cache::tags([
+			class_basename($this->model()),
+		])->flush();
+	}
+
+
+	/**
+	 * Generate Cache Key from current request
+	 * 
+	 * @return [type] [description]
+	 */
+	private function getRequestCacheKey() {
+		$request_signature = collect(request()->all())->filter(function($item, $key) {
+			return $item && $item != '0';
+		})
+		->sortKeys()
+		->transform(function($item, $key) {
+			return "{$key}:{$item}";
+		})
+		->reduce(function($carry, $item) {
+			return $carry ? $carry .';'. $item : $item;
+		});
+
+		return md5(request()->path() .';'. $request_signature);
 	}
 
 	/**
@@ -517,6 +615,14 @@ abstract class BaseRepository implements
 	 * @return object|Fractal|Collection                   output result
 	 */
 	protected function execute(array $columns = ['*'], $sinle_object = false, int $per_page = null) {
+		// Check Cache
+		if ($this->cache_key) {
+			if (Cache::tags($this->cache_tags)->has($this->cache_key)) {
+				Log::info('Get From Repo Cache', ['key' => $this->cache_key, 'tags' => $this->cache_tags]);
+				return Cache::tags($this->cache_tags)->get($this->cache_key);
+			}
+		}
+
 		// Prepare First because we might add selections by creteria
 		$this->applyPreparer();
 
@@ -539,13 +645,27 @@ abstract class BaseRepository implements
 		// Reset Scope
 		$this->resetBuilder();
 
-		return $this->export($data);
+		$data = $this->export($data);
+
+		// Put to Cache
+		if ($this->cache_key) {
+			if ($this->cache_ttl) {
+				Log::info('Put To Repo Cache Temp', ['key' => $this->cache_key, 'tags' => $this->cache_tags]);
+				Cache::tags($this->cache_tags)->put($this->cache_key, $data, $this->cache_ttl);
+			} else {
+				Log::info('Put To Repo Cache Forever', ['key' => $this->cache_key, 'tags' => $this->cache_tags]);
+				Cache::tags($this->cache_tags)->forever($this->cache_key, $data);
+			}
+		}
+
+		return $data;
 	}
 
 	/**
 	 * Output Data
-	 * 
+	 *
 	 * @param  object|Collection $data data to output
+	 * @return Collection|object|\Spatie\Fractalistic\Fractal
 	 */
 	protected function export($data)
 	{
@@ -560,6 +680,7 @@ abstract class BaseRepository implements
 	/**
 	 * Export output by transformer
 	 * @param  object|Collection $data output data
+	 * @return \Spatie\Fractalistic\Fractal
 	 */
 	protected function exportWithTransformer($data)
 	{
