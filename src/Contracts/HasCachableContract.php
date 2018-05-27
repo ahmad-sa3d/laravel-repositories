@@ -13,6 +13,22 @@ use Saad\Repositories\Contracts\CreteriaContract as Creteria;
 use Saad\Repositories\Contracts\RepositoryContract as Repository;
 
 interface HasCachableContract {
+
+	/**
+	 * Disable cache if one of the given inputs exists on request
+	 * 
+	 * @param  array  $inputs request inputs
+	 * @return RepositoryContract         Repo instance
+	 */
+	public function donotCacheWhenInputs(array $inputs = []) :RepositoryContract;
+
+	/**
+	 * Use Temp cache if one of the given inputs exists on request
+	 * 
+	 * @param  array  $inputs request inputs
+	 * @return RepositoryContract         Repo instance
+	 */
+	public function cacheByTTLWhenInputs(array $inputs = [], int $ttl = null) :RepositoryContract;
 	
 	/**
 	 * Use Cache

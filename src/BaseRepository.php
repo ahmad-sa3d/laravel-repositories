@@ -18,6 +18,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Saad\Fractal\Fractal;
 use Saad\Fractal\Transformers\TransformerAbstract;
@@ -523,11 +524,57 @@ abstract class BaseRepository implements
 	 | ---------------------------------------------------------
 	 */
 	
+	/**
+	 * Disable cache if one of the given inputs exists on request
+	 * 
+	 * @param  array  $inputs request inputs
+	 * @return RepositoryContract         Repo instance
+	 */
+	public function donotCacheWhenInputs(array $inputs = []) :RepositoryContract {
+		foreach($inputs as $input) {
+			if (Request::input($input)) {
+				$this->cache_key = false;
+				break;
+			}
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Use Temp cache if one of the given inputs exists on request
+	 * 
+	 * @param  array  $inputs request inputs
+	 * @return RepositoryContract         Repo instance
+	 */
+	public function cacheByTTLWhenInputs(array $inputs = [], int $ttl = null) :RepositoryContract {
+		foreach($inputs as $input) {
+			if (Request::input($input)) {
+				$this->cache_ttl = $ttl ?? env('REPO_CACHE_TTL', 60);
+				break;
+			}
+		}
+
+		return $this;
+	}
+	
+	/**
+	 * Cache Result
+	 * 
+	 * @param  string|null   $key  static cache key or dynamic if null
+	 * @param  array    $tags cache extra tags
+	 * @param  int|null $ttl  cache TTL or forever if null
+	 * @return RepositoryContract         Repo instance
+	 */
 	public function cachable($key = null, array $tags = [], int $ttl = null) :RepositoryContract {
+		if (false === $this->cache_key) {
+			return $this;
+		}
 
 		$this->cache_key = $key ? $key : $this->getRequestCacheKey();
 
-		if ($ttl) {
+		if ($ttl && !$this->cache_ttl) {
 			$this->cache_ttl = Carbon::now()->addMinutes($ttl);
 		}
 
