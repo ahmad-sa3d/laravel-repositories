@@ -37,7 +37,9 @@ class MakeRepository extends BaseMakeCommand
      */
     public function handle()
     {
-        parent::handle();
+        if (! parent::handle()) {
+            return;
+        }
 
         try {
             // Create Contract

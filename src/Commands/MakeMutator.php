@@ -44,7 +44,9 @@ class MakeMutator extends BaseMakeCommand
      */
     public function handle()
     {
-        parent::handle();
+        if (! parent::handle()) {
+            return;
+        }
 
         try {
             // Create Mutator
