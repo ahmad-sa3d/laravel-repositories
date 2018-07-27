@@ -14,7 +14,6 @@ use Closure;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -134,9 +133,9 @@ abstract class BaseRepository implements
 	 */
 	protected $app;
 	
-	public function __construct(Application $app, Collection $creteria)
+	public function __construct(Collection $creteria)
 	{
-		$this->app = $app;
+		$this->app = app();
 		$this->creteria = $creteria;
 		$this->makeModel();
 		$this->makeTransformer($this->transformer());
