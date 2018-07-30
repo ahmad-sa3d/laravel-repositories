@@ -1,27 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ea92d6b0-0045-4e7d-9212-f770ed3f75e1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/ahmedsaad.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/stubs/Creteria.stub" beforeDir="false" afterPath="$PROJECT_DIR$/resources/stubs/Creteria.stub" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/stubs/Mutator.stub" beforeDir="false" afterPath="$PROJECT_DIR$/resources/stubs/Mutator.stub" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BaseRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/BaseRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Commands/MakeCreteria.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Commands/MakeCriteria.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Commands/MakeRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Commands/MakeRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/CreteriaContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/CriteriaContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/HasCachableContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/HasCachableContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/HasCreteriaContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/HasCriteriaContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/HasModelMutatorContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/HasModelMutatorContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/HasPaginationContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/HasPaginationContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/HasRequestParserContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/HasRequestParserContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/HasTransformerContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/HasTransformerContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/MutatorContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/MutatorContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Contracts/RepositoryContract.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Contracts/RepositoryContract.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RepositoriesServiceProvider.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/RepositoriesServiceProvider.php" afterDir="false" />
-    </list>
+    <list default="true" id="ea92d6b0-0045-4e7d-9212-f770ed3f75e1" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -155,16 +135,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1532922868960</updated>
-      <workItem from="1532922870523" duration="1928000" />
+      <workItem from="1532922870523" duration="2021000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1928000" />
+    <option name="totallyTimeSpent" value="2021000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
