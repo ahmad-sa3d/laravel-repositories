@@ -13,19 +13,21 @@ use Saad\Repositories\Contracts\RepositoryContract;
 use Closure;
 
 interface HasPaginationContract {
-	
-	/**
-	 * Get All Paginated
-	 * @param integer $per_page how many records per page
-	 */
+
+    /**
+     * Get All Paginated
+     * @param integer $per_page how many records per page
+     * @param array $columns
+     */
 	public function paginate(int $per_page, array $columns);
 
-	/**
-	 * callback will be passed paginated collection
-	 * to add more flexibility like appends() method
-	 * 
-	 * @param \Closure $callback callback that returns 
-	 */
+    /**
+     * callback will be passed paginated collection
+     * to add more flexibility like appends() method
+     *
+     * @param \Closure $callback callback that returns
+     * @return \Saad\Repositories\Contracts\RepositoryContract
+     */
 	public function afterPaginated(Closure $callback) :RepositoryContract;
 
 }

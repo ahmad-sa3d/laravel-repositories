@@ -12,12 +12,12 @@ namespace Saad\Repositories\Contracts;
 use Saad\Repositories\Contracts\RepositoryContract as Repository;
 use Illuminate\Database\Eloquent\Builder;
 
-interface CreteriaContract {
+interface CriteriaContract {
 	
 	/**
-	 * Apply Creteria on the given query
+	 * Apply Criteria on the given query
 	 * @param  Builder            $query Eloquent Query Builder
-	 * @param  RepositoryContract $repo  Repository that uses creteria
+	 * @param  RepositoryContract $repo  Repository that uses criteria
 	 * @return Builder                   
 	 */
 	public function apply(Builder $query, Repository $repo);

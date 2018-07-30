@@ -24,8 +24,8 @@ interface RepositoryContract {
 	/**
 	 * Find By Attribute
 	 * 
-	 * @param  string $attribute attribute
-	 * @param  mix $value Attribute Value
+	 * @param string $attribute attribute
+	 * @param mixed $value Attribute Value
 	 * @param array $columns columns to get
 	 */
 	public function findBy(string $attribute, $value, array $columns);
@@ -36,14 +36,15 @@ interface RepositoryContract {
 	 */
 	public function all(array $columns);
 
-	/**
-	 * Search By Custom Field
-	 * 
-	 * @param  integer $id key of where clause
-	 * @param  mix $value_or_operator value of where clause or operator of where
-	 * @param  mix $value value of where clause
-	 * @param array $columns columns to get
-	 */
+    /**
+     * Search By Custom Field
+     *
+     * @param string $attribute
+     * @param  mixed $value_or_operator value of where clause or operator of where
+     * @param  mixed $value value of where clause
+     * @param array $columns columns to get
+     * @return
+     */
 	public function where(string $attribute, $value_or_operator, $value, array $columns);
 
 	/**
@@ -60,12 +61,13 @@ interface RepositoryContract {
 	 */
 	public function create(array $attributes);
 
-	/**
-	 * Update Record
-	 * 
-	 * @param  integer $id record id
-	 * @param  array $attributes
-	 */
+    /**
+     * Update Record
+     *
+     * @param $id_or_object
+     * @param  array $attributes
+     * @return
+     */
 	public function update($id_or_object, array $attributes);
 
 	/**

@@ -9,7 +9,6 @@
 
 namespace Saad\Repositories\Contracts;
 
-use Saad\Repositories\Contracts\CreteriaContract as Creteria;
 use Saad\Repositories\Contracts\RepositoryContract as Repository;
 
 interface HasCachableContract {

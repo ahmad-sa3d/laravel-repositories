@@ -9,7 +9,6 @@
 
 namespace Saad\Repositories\Contracts;
 
-use Saad\Repositories\Contracts\RepositoryContract;
 use Saad\Fractal\Transformers\TransformerAbstract;
 
 interface HasTransformerContract {

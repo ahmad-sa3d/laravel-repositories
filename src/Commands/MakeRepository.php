@@ -106,11 +106,11 @@ class MakeRepository extends BaseMakeCommand
 
     /**
      * Add or Remove binding to Service Provider
-     * 
-     * @param  [type]  $find_pattern [description]
-     * @param  [type]  $replacement  [description]
-     * @param  boolean $add          [description]
-     * @return [type]                [description]
+     *
+     * @param $find_pattern
+     * @param $replacement
+     * @param  boolean $add [description]
+     * @return void [type]                [description]
      */
     protected function updateProviderBinding($find_pattern, $replacement, $add = true) {
         $service_provider = app_path('Providers/AppServiceProvider.php');
@@ -124,12 +124,12 @@ class MakeRepository extends BaseMakeCommand
 
     /**
      * Replace File content by prepared content
-     * 
-     * @param  [type] $find_pattern     [description]
-     * @param  [type] $replacement      [description]
-     * @param  [type] $content          [description]
-     * @param  [type] $service_provider [description]
-     * @return [type]                   [description]
+     *
+     * @param $find_pattern
+     * @param $replacement
+     * @param $content
+     * @param $service_provider
+     * @return void [type]                   [description]
      */
     protected function replaceFileContent($find_pattern, $replacement, $content, $service_provider)
     {

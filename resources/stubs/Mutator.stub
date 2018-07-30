@@ -64,7 +64,7 @@ class $FILE$ implements MutatorContract {
 	private function update$MODEL$Object(array $attributes) :bool {
 		// Your Assignment Logic
 
-		return $this->$LOWER_MODEL$->save();
+		return (bool) $this->$LOWER_MODEL$->save();
 	}
 
 }

@@ -13,18 +13,21 @@ use Illuminate\Database\Eloquent\Model;
 
 interface MutatorContract {
 
-	/**
-	 * Create Object
-	 * 
-	 * @return Model Eloquent Model
-	 */
+    /**
+     * Create Object
+     *
+     * @param array $attributes
+     * @return Model Eloquent Model
+     */
 	public function create(array $attributes) :Model;
 
-	/**
-	 * Update Object
-	 * 
-	 * @return Model Eloquent Model
-	 */
+    /**
+     * Update Object
+     *
+     * @param Model $object
+     * @param array $attributes
+     * @return bool Eloquent Model
+     */
 	public function update(Model $object, array $attributes) :bool;
 
 }

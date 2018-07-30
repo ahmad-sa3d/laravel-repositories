@@ -10,7 +10,7 @@
 namespace Saad\Repositories;
 
 use Illuminate\Support\ServiceProvider;
-use Saad\Repositories\Commands\MakeCreteria;
+use Saad\Repositories\Commands\MakeCriteria;
 use Saad\Repositories\Commands\MakeMutator;
 use Saad\Repositories\Commands\MakeRepository;
 
@@ -23,7 +23,7 @@ class RepositoriesServiceProvider extends ServiceProvider {
 	        $this->commands([
 	            MakeRepository::class,
 	            MakeMutator::class,
-	            MakeCreteria::class,
+	            MakeCriteria::class,
 	        ]);
 	    }
 	}

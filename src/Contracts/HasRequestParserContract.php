@@ -9,18 +9,14 @@
 
 namespace Saad\Repositories\Contracts;
 
-use Saad\Repositories\Contracts\RepositoryContract;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-
 interface HasRequestParserContract {
 
-	/**
-	 * Prepare Given context
-	 * 
-	 * @param Builder|Model $contect given context should be either Eloquent Model or Eloquent Builder
-	 * @return object output object
-	 */
+    /**
+     * Prepare Given context
+     *
+     * @param $context
+     * @return object output object
+     */
 	public function prepare($context);
 
 	/**

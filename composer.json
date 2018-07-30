@@ -11,7 +11,8 @@
         "transform"
     ],
     "require": {
-        "saad/fractal": "^1.1"
+        "saad/fractal": "^1.1",
+        "saad/laravel-request-query-parser": "dev-master"
     },
     "license": "MIT",
     "authors": [

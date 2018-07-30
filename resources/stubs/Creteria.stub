@@ -1,11 +1,11 @@
 <?php
 namespace $NAMESPACE$;
 
-use Saad\Repositories\Contracts\CreteriaContract;
+use Saad\Repositories\Contracts\CriteriaContract;
 use Saad\Repositories\Contracts\RepositoryContract as Repository;
 use Illuminate\Database\Eloquent\Builder;
 
-class $FILE$ implements CreteriaContract {
+class $FILE$ implements CriteriaContract {
 
 	public function __construct()
 	{
@@ -15,7 +15,7 @@ class $FILE$ implements CreteriaContract {
 	/**
 	 * Apply Query
 	 * @param  Builder    $query        Builder to apply query on
-	 * @param  Repository $repository   Repository that applies creteria
+	 * @param  Repository $repository   Repository that applies criteria
 	 * @return Builder             		Builder after applying bindings
 	 */
 	public function apply(Builder $query, Repository $repository)

@@ -14,15 +14,16 @@ use Saad\Repositories\Contracts\RepositoryContract as Repository;
 
 interface HasModelMutatorContract {
 
-	/**
-	 * Skip Mutator collection
-	 * 
-	 * @return Repository Repository
-	 */
+    /**
+     * Skip Mutator collection
+     *
+     * @param bool $status
+     * @return Repository Repository
+     */
 	public function skipMutator(bool $status) :Repository;
 
 	/**
-	 * add Mutator to creteria collection
+	 * add Mutator to criteria collection
 	 *
 	 * @param Mutator $mutator Mutator to be added to query builder
 	 * @return Repository Repository
