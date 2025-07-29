@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Filesystem\Filesystem;
 use Saad\Fractal\Commands\BaseMakeCommand;
 
-class MakeCreteria extends BaseMakeCommand
+class MakeCriteria extends BaseMakeCommand
 {
     /**
      * Output File name
@@ -28,14 +28,14 @@ class MakeCreteria extends BaseMakeCommand
      *
      * @var string
      */
-    protected $signature = 'make:creteria {name} {--nest=}';
+    protected $signature = 'make:criteria {name} {--nest=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Make Creteria';
+    protected $description = 'Make Criteria';
 
     /**
      * Execute the console command.
@@ -49,12 +49,12 @@ class MakeCreteria extends BaseMakeCommand
         }
 
         try {
-            // Create Creteria
-            $this->create("Creteria");
+            // Create Criteria
+            $this->create("Criteria");
         } catch (\Exception $exception) {
             $this->error($exception->getMessage());
             $this->info('Rolling Back');
-            $this->delete("Creteria");
+            $this->delete("Criteria");
         }
     }
 
@@ -89,6 +89,6 @@ class MakeCreteria extends BaseMakeCommand
      * @return string Directory name
      */
     protected function getOutputDirectoryName() {
-        return 'Creteria';
+        return 'Criteria';
     }
 }

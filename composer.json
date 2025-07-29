@@ -1,10 +1,10 @@
 {
     "name": "saad/laravel-repositories",
-    "description": "This library will applies Repositpry design pattern to Laravel",
+    "description": "This library applies Repository design pattern to Laravel",
     "keywords": [
         "laravel",
         "repositories",
-        "creteria",
+        "criteria",
         "mutation",
         "mutate",
         "models",
