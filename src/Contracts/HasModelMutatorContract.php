@@ -22,7 +22,7 @@ interface HasModelMutatorContract {
 	public function skipMutator(bool $status) :Repository;
 
 	/**
-	 * add Mutator to creteria collection
+	 * add Mutator to criteria collection
 	 *
 	 * @param Mutator $mutator Mutator to be added to query builder
 	 * @return Repository Repository

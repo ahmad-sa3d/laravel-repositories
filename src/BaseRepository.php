@@ -22,9 +22,9 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use Saad\Fractal\Fractal;
 use Saad\Fractal\Transformers\TransformerAbstract;
 use Saad\QueryParser\RequestQueryParser;
-use Saad\Repositories\Contracts\CreteriaContract;
+use Saad\Repositories\Contracts\CriteriaContract;
 use Saad\Repositories\Contracts\HasCachableContract;
-use Saad\Repositories\Contracts\HasCreteriaContract;
+use Saad\Repositories\Contracts\HasCriteriaContract;
 use Saad\Repositories\Contracts\HasModelMutatorContract;
 use Saad\Repositories\Contracts\HasPaginationContract;
 use Saad\Repositories\Contracts\HasRequestParserContract;
@@ -34,7 +34,7 @@ use Saad\Repositories\Contracts\RepositoryContract;
 
 abstract class BaseRepository implements
 	RepositoryContract,
-	HasCreteriaContract,
+	HasCriteriaContract,
 	HasTransformerContract,
 	HasRequestParserContract,
 	HasModelMutatorContract,
@@ -56,11 +56,11 @@ abstract class BaseRepository implements
 	protected $builder;
 
 	/**
-	 * Creteria Collection
+	 * Criteria Collection
 	 * 
 	 * @var Collection
 	 */
-	protected $creteria;
+	protected $criteria;
 
 	/**
 	 * Model Mutator
@@ -91,11 +91,11 @@ abstract class BaseRepository implements
 	protected $cache_ttl;
 
 	/**
-	 * skip creteria or not
+	 * skip criteria or not
 	 * 
 	 * @var bool
 	 */
-	protected $skip_creteria = false;
+	protected $skip_criteria = false;
 
 	/**
 	 * Skip Transformer
@@ -133,10 +133,10 @@ abstract class BaseRepository implements
 	 */
 	protected $app;
 	
-	public function __construct(Collection $creteria)
+	public function __construct(Collection $criteria)
 	{
 		$this->app = app();
-		$this->creteria = $creteria;
+		$this->criteria = $criteria;
 		$this->makeModel();
 		$this->makeTransformer($this->transformer());
 	}
@@ -307,73 +307,73 @@ abstract class BaseRepository implements
 
 	/**
 	 | ---------------------------------------------------------
-	 | 				HasCreteria Implementation
+	 | 				HasCriteria Implementation
 	 | ---------------------------------------------------------
 	 */
 
 	/**
-	 * Apply Creteria on Builder
+	 * Apply Criteria on Builder
 	 *
 	 * @return RepositoryContract Repository
 	 */
-	public function applyCreteria() :RepositoryContract {
-		if ($this->skip_creteria) {
+	public function applyCriteria() :RepositoryContract {
+		if ($this->skip_criteria) {
 			return $this;
 		}
 
-		$this->creteria->each(function ($creteria) {
-			if (! $creteria instanceof CreteriaContract) {
+		$this->criteria->each(function ($criteria) {
+			if (! $criteria instanceof CriteriaContract) {
 				return;
 			}
 
-			$this->getByCreteria($creteria);
+			$this->getByCriteria($criteria);
 		});
 
 		return $this;
 	}
 
 	/**
-	 * Skip Creteria collection
+	 * Skip Criteria collection
 	 *
 	 * @param bool $status
 	 * @return RepositoryContract Repository
 	 */
-	public function skipCreteria(bool $status = true) :RepositoryContract {
-		$this->skip_creteria = $status;
+	public function skipCriteria(bool $status = true) :RepositoryContract {
+		$this->skip_criteria = $status;
 		return $this;
 	}
 
 	/**
-	 * add Creteria to creteria collection
+	 * add Criteria to criteria collection
 	 *
-	 * @param CreteriaContract $creteria Creteria to be added to query builder
+	 * @param CriteriaContract $criteria Criteria to be added to query builder
 	 * @return RepositoryContract Repository
 	 */
-	public function pushCreteria(CreteriaContract $creteria) :RepositoryContract {
-		$this->creteria->push($creteria);
+	public function pushCriteria(CriteriaContract $criteria) :RepositoryContract {
+		$this->criteria->push($criteria);
 		return $this;
 	}
 
 	/**
-	 * reset creteria collection
+	 * reset criteria collection
 	 *
 	 * @return RepositoryContract Repository
 	 */
-	public function resetCreteria() :RepositoryContract {
-		$this->creteria = collect();
+	public function resetCriteria() :RepositoryContract {
+		$this->criteria = collect();
 		return $this;
 	}
 
 	/**
-	 * apply creteria directly to query builder
+	 * apply criteria directly to query builder
 	 *
-	 * skipCreteria has no effect
+	 * skipCriteria has no effect
 	 *
-	 * @param CreteriaContract $creteria Creteria to be added to query builder
+	 * @param CriteriaContract $criteria Criteria to be added to query builder
 	 * @return RepositoryContract Repository
 	 */
-	public function getByCreteria(CreteriaContract $creteria) :RepositoryContract {
-		$creteria->apply($this->builder, $this);
+	public function getByCriteria(CriteriaContract $criteria) :RepositoryContract {
+		$criteria->apply($this->builder, $this);
 		return $this;
 	}
 
@@ -507,7 +507,7 @@ abstract class BaseRepository implements
 	}
 
 	/**
-	 * add Mutator to creteria collection
+	 * add Mutator to criteria collection
 	 *
 	 * @param MutatorContract $mutator Mutator to be added to query builder
 	 * @return RepositoryContract Repository
@@ -669,11 +669,11 @@ abstract class BaseRepository implements
 			}
 		}
 
-		// Prepare First because we might add selections by creteria
+		// Prepare First because we might add selections by criteria
 		$this->applyPreparer();
 
-		// Apply Creteria
-		$this->applyCreteria();
+		// Apply Criteria
+		$this->applyCriteria();
 
 		// Execute Query
 		if ($per_page) {
