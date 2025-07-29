@@ -507,7 +507,7 @@ abstract class BaseRepository implements
 	}
 
 	/**
-	 * add Mutator to creteria collection
+	 * add Mutator to criteria collection
 	 *
 	 * @param MutatorContract $mutator Mutator to be added to query builder
 	 * @return RepositoryContract Repository
@@ -669,7 +669,7 @@ abstract class BaseRepository implements
 			}
 		}
 
-		// Prepare First because we might add selections by creteria
+		// Prepare First because we might add selections by criteria
 		$this->applyPreparer();
 
 		// Apply Criteria
